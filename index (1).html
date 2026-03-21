@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>EduBot Pro</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:       #0d0d14;
+  --surface:  #13131e;
+  --card:     #1a1a2e;
+  --card2:    #1e1e35;
+  --border:   rgba(138,110,255,0.12);
+  --text:     #eeeeff;
+  --muted:    #6666aa;
+  --accent:   #8a6eff;
+  --accent2:  #b366ff;
+  --glow:     rgba(138,110,255,0.25);
+  --grad:     linear-gradient(135deg,#8a6eff,#b366ff);
+  --grad2:    linear-gradient(135deg,#6e8aff,#8a6eff);
+  --grad3:    linear-gradient(135deg,#ff6eb4,#b366ff);
+  --r:        16px;
+  --r-sm:     10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--bg);}
+body{font-family:'Outfit',sans-serif;color:var(--text);display:flex;flex-direction:column;}
+
+/* AMBIENT */
+.amb{position:fixed;pointer-events:none;z-index:0;}
+.amb1{top:-20%;left:-10%;width:55vw;height:55vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(138,110,255,.1) 0%,transparent 70%);}
+.amb2{bottom:-15%;right:-5%;width:45vw;height:45vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(179,102,255,.07) 0%,transparent 70%);}
+
+/* HEADER */
+.hdr{
+  position:relative;z-index:10;flex-shrink:0;
+  padding:14px 18px 10px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+  background:rgba(13,13,20,.85);backdrop-filter:blur(20px);
+}
+.hdr-l{display:flex;align-items:center;gap:11px;}
+.ava{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--grad);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:15px;
+  box-shadow:0 0 0 2px rgba(138,110,255,.35);
+  flex-shrink:0;
+}
+.hdr-info h3{font-size:14px;font-weight:700;letter-spacing:-.2px;}
+.hdr-info span{font-size:11px;color:var(--muted);}
+.streak{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(255,180,50,.1);border:1px solid rgba(255,180,50,.2);
+  border-radius:20px;padding:4px 10px;
+  font-size:11px;font-weight:700;color:#ffb432;
+}
+
+/* TABS */
+.tabs{
+  flex-shrink:0;position:relative;z-index:10;
+  display:flex;gap:3px;padding:8px 14px;
+  background:rgba(13,13,20,.7);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);overflow-x:auto;
+}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex-shrink:0;padding:6px 13px;border-radius:20px;
+  font-size:11.5px;font-weight:600;cursor:pointer;
+  transition:all .2s ease;color:var(--muted);white-space:nowrap;
+  border:1px solid transparent;
+}
+.tab.active{background:var(--grad);color:#fff;box-shadow:0 3px 12px var(--glow);}
+.tab:not(.active):active{background:var(--card);color:var(--text);}
+
+/* PAGES */
+.pages{flex:1;overflow:hidden;position:relative;z-index:1;}
+.page{
+  position:absolute;inset:0;overflow-y:auto;
+  padding:14px 14px 24px;
+  flex-direction:column;gap:12px;display:none;
+  animation:pgIn .25s ease;
+}
+.page.active{display:flex;}
+.page::-webkit-scrollbar{display:none;}
+@keyframes pgIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* CARDS */
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;
+}
+.card-ttl{
+  font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;
+}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sec-ttl{font-size:15px;font-weight:800;}
+.sec-act{font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;}
+
+/* STAT GRID */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.scard{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r-sm);padding:13px;position:relative;overflow:hidden;
+}
+.scard::after{
+  content:'';position:absolute;top:-15px;right:-15px;
+  width:50px;height:50px;border-radius:50%;opacity:.15;
+}
+.scard.v::after{background:var(--accent);}
+.scard.p::after{background:#ff6eb4;}
+.scard.g::after{background:#43e8b0;}
+.scard.y::after{background:#ffb432;}
+.sico{font-size:20px;margin-bottom:7px;}
+.sval{font-size:24px;font-weight:900;line-height:1;margin-bottom:3px;}
+.sval.v{background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sval.p{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sval.g{color:#43e8b0;}
+.sval.y{color:#ffb432;}
+.slbl{font-size:11px;color:var(--muted);font-weight:500;}
+
+/* PROGRESS */
+.pw{margin-top:6px;}
+.pl{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;}
+.pl span:last-child{color:var(--muted);}
+.pb{height:5px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;}
+.pf{height:100%;border-radius:99px;transition:width 1s cubic-bezier(.4,0,.2,1);}
+.pf.v{background:var(--grad);}
+.pf.g{background:linear-gradient(90deg,#43e8b0,#8a6eff);}
+.pf.p{background:var(--grad3);}
+
+/* TASKS */
+.titem{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 0;border-bottom:1px solid var(--border);
+  cursor:pointer;
+}
+.titem:last-child{border-bottom:none;padding-bottom:0;}
+.titem:first-child{padding-top:0;}
+.tcheck{
+  width:20px;height:20px;border-radius:5px;flex-shrink:0;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.titem.done .tcheck{background:var(--accent);border-color:var(--accent);}
+.titem.done .ttxt{text-decoration:line-through;color:var(--muted);}
+.tinfo{flex:1;min-width:0;}
+.ttxt{font-size:13px;font-weight:600;margin-bottom:3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tmeta{display:flex;gap:6px;align-items:center;}
+.ttag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;
+  background:rgba(138,110,255,.15);color:var(--accent);}
+.tdate{font-size:10px;color:var(--muted);}
+.tpr{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* SCHEDULE */
+.daytabs{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;}
+.daytabs::-webkit-scrollbar{display:none;}
+.dtab{
+  flex-shrink:0;width:42px;height:54px;border-radius:var(--r-sm);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  border:1px solid var(--border);cursor:pointer;transition:all .2s;background:var(--card2);
+}
+.dtab.active{background:var(--grad);border-color:transparent;box-shadow:0 3px 12px var(--glow);}
+.dname{font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;}
+.dnum{font-size:16px;font-weight:800;}
+.dtab.active .dname,.dtab.active .dnum{color:#fff;}
+.today-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);margin-top:1px;}
+.litem{display:flex;gap:12px;align-items:stretch;padding:9px 0;border-bottom:1px solid var(--border);}
+.litem:last-child{border-bottom:none;}
+.ltime{font-size:11px;color:var(--muted);font-weight:600;min-width:40px;padding-top:2px;}
+.lline{width:3px;border-radius:99px;flex-shrink:0;}
+.linfo{flex:1;}
+.lname{font-size:13px;font-weight:700;margin-bottom:2px;}
+.lroom{font-size:11px;color:var(--muted);}
+
+/* GOALS */
+.gitem{
+  padding:13px;border-radius:var(--r-sm);
+  background:var(--card2);border:1px solid var(--border);
+  margin-bottom:9px;
+}
+.gitem:last-child{margin-bottom:0;}
+.ghdr{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.gico{font-size:18px;}
+.gtw{flex:1;}
+.gtit{font-size:13px;font-weight:700;}
+.gdl{font-size:11px;color:var(--muted);margin-top:2px;}
+.gpct{font-size:15px;font-weight:800;color:#43e8b0;}
+
+/* RANKING */
+.ritem{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);}
+.ritem:last-child{border-bottom:none;}
+.rnum{font-size:17px;font-weight:900;min-width:28px;text-align:center;}
+.rnum.gold{color:#ffb432;}
+.rnum.silver{color:#a0aec0;}
+.rnum.bronze{color:#cd7f32;}
+.rava{width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;}
+.rinfo{flex:1;}
+.rname{font-size:13px;font-weight:700;}
+.rclass{font-size:11px;color:var(--muted);}
+.rscore{font-size:15px;font-weight:900;background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* STATS PAGE */
+.slevel{
+  display:flex;align-items:center;gap:12px;
+  padding:14px;border-radius:var(--r-sm);
+  background:var(--card2);border:1px solid var(--border);
+  margin-bottom:10px;
+}
+.slevel-badge{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--grad);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:900;flex-shrink:0;
+  box-shadow:0 0 20px var(--glow);
+}
+.slevel-info{flex:1;}
+.slevel-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+.slevel-sub{font-size:11px;color:var(--muted);}
+
+/* ADD BTN */
+.addbtn{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:13px;border-radius:var(--r-sm);
+  background:rgba(138,110,255,.08);
+  border:1.5px dashed rgba(138,110,255,.25);
+  color:var(--accent);font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif;
+}
+.addbtn:active{background:rgba(138,110,255,.15);}
+
+/* MODAL */
+.moverlay{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(12px);
+  display:none;align-items:flex-end;
+}
+.moverlay.open{display:flex;}
+.modal{
+  width:100%;background:var(--card);
+  border-radius:22px 22px 0 0;padding:18px;
+  animation:mUp .3s cubic-bezier(.4,0,.2,1);
+}
+@keyframes mUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.mhandle{width:34px;height:4px;border-radius:99px;background:var(--border);margin:0 auto 18px;}
+.mttl{font-size:17px;font-weight:800;margin-bottom:16px;}
+.igrp{margin-bottom:12px;}
+.ilbl{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;}
+.ifield{
+  width:100%;background:var(--card2);
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  padding:11px 13px;color:var(--text);font-size:13px;
+  font-family:'Outfit',sans-serif;outline:none;
+  transition:border-color .2s;
+}
+.ifield:focus{border-color:var(--accent);}
+.irow{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.sbtn{
+  width:100%;padding:14px;border-radius:var(--r-sm);
+  background:var(--grad);border:none;
+  color:#fff;font-size:14px;font-weight:800;
+  font-family:'Outfit',sans-serif;cursor:pointer;
+  box-shadow:0 5px 18px var(--glow);
+  transition:opacity .2s;margin-top:4px;
+}
+.sbtn:active{opacity:.85;}
+
+/* CHIP */
+.chip{display:inline-flex;align-items:center;gap:3px;
+  padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+.chip.g{background:rgba(67,232,176,.1);color:#43e8b0;}
+.chip.v{background:rgba(138,110,255,.1);color:var(--accent);}
+
+/* MOOD */
+.mood-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mcard{
+  padding:12px;border-radius:var(--r-sm);
+  background:var(--card2);border:1px solid var(--border);
+  text-align:center;cursor:pointer;transition:all .2s;
+}
+.mcard:active{border-color:var(--accent);background:rgba(138,110,255,.1);}
+.mcard .mico{font-size:22px;margin-bottom:5px;}
+.mcard .mlbl{font-size:12px;font-weight:600;}
+
+/* EMPTY */
+.empty{text-align:center;padding:24px;color:var(--muted);font-size:13px;}
+.empty .eico{font-size:32px;margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<div class="amb amb1"></div>
+<div class="amb amb2"></div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="ava" id="ava">A</div>
+    <div class="hdr-info">
+      <h3 id="hname">O'quvchi</h3>
+      <span id="hclass">Yuklanmoqda...</span>
+    </div>
+  </div>
+  <div class="streak">🔥 <span id="hstreak">0</span></div>
+</header>
+
+<!-- TABS -->
+<nav class="tabs">
+  <div class="tab active" onclick="goTab('dash',this)">🏠 Bosh</div>
+  <div class="tab" onclick="goTab('tasks',this)">✅ Vazifalar</div>
+  <div class="tab" onclick="goTab('sched',this)">📅 Jadval</div>
+  <div class="tab" onclick="goTab('goals',this)">🎯 Maqsadlar</div>
+  <div class="tab" onclick="goTab('stats',this)">📊 Statistika</div>
+  <div class="tab" onclick="goTab('rank',this)">🏆 Reyting</div>
+  <div class="tab" onclick="goTab('mood',this)">😊 Kayfiyat</div>
+</nav>
+
+<!-- PAGES -->
+<div class="pages">
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dash">
+    <div class="sgrid">
+      <div class="scard v">
+        <div class="sico">📚</div>
+        <div class="sval v" id="d-tasks">0</div>
+        <div class="slbl">Vazifalar</div>
+      </div>
+      <div class="scard p">
+        <div class="sico">⭐</div>
+        <div class="sval p" id="d-score">0</div>
+        <div class="slbl">Ball</div>
+      </div>
+      <div class="scard g">
+        <div class="sico">🎯</div>
+        <div class="sval g" id="d-goals">0</div>
+        <div class="slbl">Maqsadlar</div>
+      </div>
+      <div class="scard y">
+        <div class="sico">🔥</div>
+        <div class="sval y" id="d-streak">0</div>
+        <div class="slbl">Streak</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-ttl">Faollik darajasi</div>
+      <div class="pw">
+        <div class="pl"><span>Vazifalar</span><span id="pt-txt">0%</span></div>
+        <div class="pb"><div class="pf v" id="pt" style="width:0%"></div></div>
+      </div>
+      <div class="pw" style="margin-top:12px">
+        <div class="pl"><span>Maqsadlar</span><span id="pg-txt">0%</span></div>
+        <div class="pb"><div class="pf g" id="pg" style="width:0%"></div></div>
+      </div>
+      <div class="pw" style="margin-top:12px">
+        <div class="pl"><span>Umumiy ball</span><span id="ps-txt">0</span></div>
+        <div class="pb"><div class="pf p" id="ps" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec-hdr">
+        <div class="sec-ttl">Bugungi vazifalar</div>
+        <div class="sec-act" onclick="goTab('tasks',document.querySelectorAll('.tab')[1])">Hammasi →</div>
+      </div>
+      <div id="d-tlist"></div>
+    </div>
+  </div>
+
+  <!-- TASKS -->
+  <div class="page" id="page-tasks">
+    <div class="card">
+      <div class="sec-hdr">
+        <div class="sec-ttl">Barcha vazifalar</div>
+        <div class="chip v" id="tc">0 ta</div>
+      </div>
+      <div id="tlist"></div>
+    </div>
+    <div class="addbtn" onclick="openM('task')">＋ Yangi vazifa</div>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="page" id="page-sched">
+    <div class="card">
+      <div class="daytabs" id="daytabs"></div>
+      <div id="llist"></div>
+    </div>
+    <div class="addbtn" onclick="openM('lesson')">＋ Dars qo'shish</div>
+  </div>
+
+  <!-- GOALS -->
+  <div class="page" id="page-goals">
+    <div class="card">
+      <div class="sec-hdr">
+        <div class="sec-ttl">Maqsadlarim</div>
+        <div class="chip g" id="gc">0 ta</div>
+      </div>
+      <div id="glist"></div>
+    </div>
+    <div class="addbtn" onclick="openM('goal')">＋ Yangi maqsad</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="page" id="page-stats">
+    <div class="slevel">
+      <div class="slevel-badge" id="sl-badge">1</div>
+      <div class="slevel-info">
+        <div class="slevel-title" id="sl-title">Level 1</div>
+        <div class="slevel-sub" id="sl-sub">0 / 100 XP</div>
+        <div class="pw" style="margin-top:6px">
+          <div class="pb"><div class="pf v" id="sl-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">Batafsil statistika</div>
+      <div id="stats-detail"></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">Kayfiyat tarixi</div>
+      <div id="mood-hist"></div>
+    </div>
+  </div>
+
+  <!-- RANKING -->
+  <div class="page" id="page-rank">
+    <div class="card">
+      <div class="card-ttl">🏆 Top o'quvchilar</div>
+      <div id="rlist"></div>
+    </div>
+  </div>
+
+  <!-- MOOD -->
+  <div class="page" id="page-mood">
+    <div class="card">
+      <div class="sec-ttl" style="margin-bottom:14px">😊 Bugungi kayfiyat</div>
+      <div class="mood-grid" id="mood-grid"></div>
+    </div>
+    <div class="card" id="mood-resp" style="display:none">
+      <div id="mood-resp-text"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODALS -->
+<div class="moverlay" id="mov" onclick="closeM(event)">
+
+  <!-- TASK -->
+  <div class="modal" id="m-task" style="display:none">
+    <div class="mhandle"></div>
+    <div class="mttl">✅ Vazifa qo'shish</div>
+    <div class="igrp">
+      <label class="ilbl">Fan</label>
+      <input class="ifield" id="t-sub" placeholder="Matematika"/>
+    </div>
+    <div class="igrp">
+      <label class="ilbl">Vazifa nomi</label>
+      <input class="ifield" id="t-ttl" placeholder="Tenglamalar yechish"/>
+    </div>
+    <div class="irow">
+      <div class="igrp">
+        <label class="ilbl">Muddat</label>
+        <input class="ifield" id="t-dl" type="date"/>
+      </div>
+      <div class="igrp">
+        <label class="ilbl">Muhimlik</label>
+        <select class="ifield" id="t-pr">
+          <option value="high">🔴 Yuqori</option>
+          <option value="mid" selected>🟡 O'rta</option>
+          <option value="low">🟢 Past</option>
+        </select>
+      </div>
+    </div>
+    <button class="sbtn" onclick="addTask()">Qo'shish</button>
+  </div>
+
+  <!-- LESSON -->
+  <div class="modal" id="m-lesson" style="display:none">
+    <div class="mhandle"></div>
+    <div class="mttl">📅 Dars qo'shish</div>
+    <div class="igrp">
+      <label class="ilbl">Kun</label>
+      <select class="ifield" id="l-day">
+        <option value="0">Dushanba</option>
+        <option value="1">Seshanba</option>
+        <option value="2">Chorshanba</option>
+        <option value="3">Payshanba</option>
+        <option value="4">Juma</option>
+        <option value="5">Shanba</option>
+      </select>
+    </div>
+    <div class="irow">
+      <div class="igrp">
+        <label class="ilbl">Vaqt</label>
+        <input class="ifield" id="l-time" type="time" value="08:00"/>
+      </div>
+      <div class="igrp">
+        <label class="ilbl">Fan</label>
+        <input class="ifield" id="l-sub" placeholder="Matematika"/>
+      </div>
+    </div>
+    <div class="igrp">
+      <label class="ilbl">Xona</label>
+      <input class="ifield" id="l-room" placeholder="201-xona"/>
+    </div>
+    <button class="sbtn" onclick="addLesson()">Qo'shish</button>
+  </div>
+
+  <!-- GOAL -->
+  <div class="modal" id="m-goal" style="display:none">
+    <div class="mhandle"></div>
+    <div class="mttl">🎯 Maqsad qo'shish</div>
+    <div class="igrp">
+      <label class="ilbl">Maqsad</label>
+      <input class="ifield" id="g-ttl" placeholder="Matematikadan 5 olish"/>
+    </div>
+    <div class="irow">
+      <div class="igrp">
+        <label class="ilbl">Muddat</label>
+        <input class="ifield" id="g-dl" type="date"/>
+      </div>
+      <div class="igrp">
+        <label class="ilbl">Emoji</label>
+        <input class="ifield" id="g-ico" placeholder="🎯" maxlength="2"/>
+      </div>
+    </div>
+    <button class="sbtn" onclick="addGoal()">Qo'shish</button>
+  </div>
+
+</div>
+
+<script>
+// ── TELEGRAM ──
+const tg = window.Telegram?.WebApp;
+if(tg){ tg.expand(); tg.setHeaderColor('#0d0d14'); }
+
+// ── STORAGE ──
+const get = (k,d) => { try{ return JSON.parse(localStorage.getItem(k))??d; }catch{ return d; } };
+const set = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+
+// ── DATA ──
+let D = get('edu_data', {
+  name: tg?.initDataUnsafe?.user?.first_name || 'O\'quvchi',
+  class: '9-sinf', score: 45, xp: 65, streak: 7, level: 1,
+  tasks: [
+    {id:1, subject:'Matematika', title:'Kvadrat tenglamalar', deadline:'2025-03-25', priority:'high', done:false},
+    {id:2, subject:'Fizika',     title:'Mexanika masalalari', deadline:'2025-03-26', priority:'mid',  done:false},
+    {id:3, subject:'Ingliz tili',title:'Essay yozish',        deadline:'2025-03-24', priority:'low',  done:true},
+  ],
+  goals: [
+    {id:1, ico:'🏆', title:'Matematikadan 5 olish', deadline:'2025-06-01', progress:65},
+    {id:2, ico:'📚', title:'Kitob o\'qish',          deadline:'2025-04-01', progress:30},
+    {id:3, ico:'🇬🇧', title:'Ingliz tilini yaxshilash',deadline:'2025-12-01',progress:45},
+  ],
+  schedule: {
+    0:[{time:'08:00',subject:'Matematika',color:'#8a6eff',room:'201'},
+       {time:'09:45',subject:'Fizika',    color:'#ff6eb4',room:'Lab'},
+       {time:'11:30',subject:'Tarix',     color:'#ffb432',room:'305'}],
+    1:[{time:'08:00',subject:'Ingliz tili',color:'#43e8b0',room:'204'},
+       {time:'09:45',subject:'Adabiyot',   color:'#ffb432',room:'103'}],
+    2:[{time:'08:00',subject:'Kimyo',      color:'#ff6eb4',room:'Lab'},
+       {time:'09:45',subject:'Matematika', color:'#8a6eff',room:'201'},
+       {time:'11:30',subject:'Biologiya',  color:'#43e8b0',room:'205'}],
+    3:[{time:'08:00',subject:'Fizika',     color:'#ff6eb4',room:'Lab'},
+       {time:'09:45',subject:'Tarix',      color:'#ffb432',room:'305'}],
+    4:[{time:'08:00',subject:'Matematika', color:'#8a6eff',room:'201'},
+       {time:'09:45',subject:'Ingliz tili',color:'#43e8b0',room:'204'}],
+    5:[{time:'09:00',subject:'Ixtiyoriy',  color:'#a0aec0',room:'—'}],
+  },
+  mood_history: [],
+  water: 3, water_goal: 8,
+  sleep: [], pomodoro: 4,
+});
+
+const rankings = [
+  {name:'Alisher T.',  cls:'9-sinf',  score:120, color:'#8a6eff'},
+  {name:'Malika R.',   cls:'10-sinf', score:105, color:'#ff6eb4'},
+  {name:'Jasur K.',    cls:'9-sinf',  score:98,  color:'#43e8b0'},
+  {name:'Nodira S.',   cls:'11-sinf', score:87,  color:'#ffb432'},
+  {name:'Bobur M.',    cls:'8-sinf',  score:74,  color:'#b366ff'},
+];
+
+const moods = [
+  {ico:'😄', lbl:'Zo\'r!',    val:'great'},
+  {ico:'😊', lbl:'Yaxshi',    val:'good'},
+  {ico:'😐', lbl:'Normal',    val:'ok'},
+  {ico:'😔', lbl:'Charchagan',val:'tired'},
+  {ico:'😫', lbl:'Qiyin kun', val:'hard'},
+  {ico:'😤', lbl:'G\'azab',   val:'angry'},
+];
+
+const dayNames = ['Du','Se','Ch','Pa','Ju','Sh'];
+const dayFull  = ['Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
+let activeDay  = Math.min(new Date().getDay() === 0 ? 6 : new Date().getDay()-1, 5);
+
+// ── HEADER ──
+function renderHeader(){
+  document.getElementById('ava').textContent    = D.name[0].toUpperCase();
+  document.getElementById('hname').textContent  = D.name;
+  document.getElementById('hclass').textContent = D.class;
+  document.getElementById('hstreak').textContent= D.streak + ' kun';
+}
+
+// ── DASHBOARD ──
+function renderDash(){
+  const tasks   = D.tasks||[];
+  const goals   = D.goals||[];
+  const doneT   = tasks.filter(t=>t.done).length;
+  const doneG   = goals.filter(g=>(g.progress||0)>=100).length;
+  const pending = tasks.filter(t=>!t.done);
+
+  document.getElementById('d-tasks').textContent  = tasks.length;
+  document.getElementById('d-score').textContent  = D.score||0;
+  document.getElementById('d-goals').textContent  = goals.length;
+  document.getElementById('d-streak').textContent = D.streak||0;
+
+  const tp = tasks.length ? Math.round(doneT/tasks.length*100) : 0;
+  const gp = goals.length ? Math.round(goals.reduce((a,g)=>a+(g.progress||0),0)/goals.length) : 0;
+  const sp = Math.min(Math.round((D.score||0)/200*100), 100);
+
+  setTimeout(()=>{
+    setBar('pt', tp);  setTxt('pt-txt', tp+'%');
+    setBar('pg', gp);  setTxt('pg-txt', gp+'%');
+    setBar('ps', sp);  setTxt('ps-txt', D.score+'');
+  }, 150);
+
+  const el = document.getElementById('d-tlist');
+  if(!pending.length){
+    el.innerHTML = '<div class="empty"><div class="eico">🎉</div>Barcha vazifalar bajarilgan!</div>';
+  } else {
+    el.innerHTML = pending.slice(0,4).map(t=>taskHTML(t)).join('');
+  }
+}
+
+// ── TASKS ──
+function taskHTML(t){
+  const prC = {high:'#ff6eb4', mid:'#ffb432', low:'#43e8b0'};
+  return `<div class="titem ${t.done?'done':''}" onclick="toggleTask(${t.id})">
+    <div class="tcheck">${t.done?'<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>':''}</div>
+    <div class="tinfo">
+      <div class="ttxt">${t.title}</div>
+      <div class="tmeta"><span class="ttag">${t.subject}</span><span class="tdate">📅 ${t.deadline}</span></div>
+    </div>
+    <div class="tpr" style="background:${prC[t.priority]||prC.mid}"></div>
+  </div>`;
+}
+
+function renderTasks(){
+  const tasks = D.tasks||[];
+  document.getElementById('tc').textContent = tasks.length+' ta';
+  const el = document.getElementById('tlist');
+  el.innerHTML = tasks.length ? tasks.map(t=>taskHTML(t)).join('') :
+    '<div class="empty"><div class="eico">📭</div>Hali vazifa yo\'q</div>';
+}
+
+function toggleTask(id){
+  const t = (D.tasks||[]).find(t=>t.id===id);
+  if(t){
+    t.done = !t.done;
+    if(t.done){ D.score=(D.score||0)+10; D.xp=(D.xp||0)+20; }
+    set('edu_data', D);
+    renderTasks(); renderDash();
+  }
+}
+
+// ── SCHEDULE ──
+function renderSched(){
+  const today = new Date().getDay()===0?6:new Date().getDay()-1;
+  const now   = new Date();
+  document.getElementById('daytabs').innerHTML = [0,1,2,3,4,5].map(i=>{
+    const d = new Date(now);
+    d.setDate(now.getDate() - (now.getDay()===0?6:now.getDay()-1) + i);
+    return `<div class="dtab ${i===activeDay?'active':''}" onclick="selDay(${i})">
+      <span class="dname">${dayNames[i]}</span>
+      <span class="dnum">${d.getDate()}</span>
+      ${i===today?'<div class="today-dot"></div>':''}
+    </div>`;
+  }).join('');
+
+  const lessons = (D.schedule||{})[activeDay]||[];
+  const el      = document.getElementById('llist');
+  if(!lessons.length){
+    el.innerHTML = '<div class="empty"><div class="eico">🎉</div>Bu kun dars yo\'q!</div>';
+    return;
+  }
+  el.innerHTML = lessons.map(l=>`
+    <div class="litem">
+      <div class="ltime">${l.time}</div>
+      <div class="lline" style="background:${l.color||'var(--accent)'}"></div>
+      <div class="linfo">
+        <div class="lname">${l.subject}</div>
+        ${l.room?`<div class="lroom">${l.room}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function selDay(i){ activeDay=i; renderSched(); }
+
+// ── GOALS ──
+function renderGoals(){
+  const goals = D.goals||[];
+  document.getElementById('gc').textContent = goals.length+' ta';
+  const el = document.getElementById('glist');
+  if(!goals.length){
+    el.innerHTML = '<div class="empty"><div class="eico">📭</div>Hali maqsad yo\'q</div>';
+    return;
+  }
+  el.innerHTML = goals.map(g=>`
+    <div class="gitem">
+      <div class="ghdr">
+        <div class="gico">${g.ico||'🎯'}</div>
+        <div class="gtw">
+          <div class="gtit">${g.title}</div>
+          <div class="gdl">📅 ${g.deadline}</div>
+        </div>
+        <div class="gpct">${g.progress||0}%</div>
+      </div>
+      <div class="pb"><div class="pf g" style="width:${g.progress||0}%"></div></div>
+    </div>`).join('');
+}
+
+// ── STATS ──
+function renderStats(){
+  const xp     = D.xp||0;
+  const level  = Math.max(1, Math.floor(xp/100));
+  const xpMod  = xp%100;
+  document.getElementById('sl-badge').textContent = level;
+  document.getElementById('sl-title').textContent = `Level ${level}`;
+  document.getElementById('sl-sub').textContent   = `${xpMod} / 100 XP`;
+  setTimeout(()=>setBar('sl-bar', xpMod), 150);
+
+  const tasks = D.tasks||[];
+  const goals = D.goals||[];
+  const doneT = tasks.filter(t=>t.done).length;
+  const doneG = goals.filter(g=>(g.progress||0)>=100).length;
+
+  document.getElementById('stats-detail').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      ${statRow('✅','Bajarilgan',`${doneT}/${tasks.length}`)}
+      ${statRow('🎯','Maqsadlar',`${doneG}/${goals.length}`)}
+      ${statRow('⭐','Ball',D.score||0)}
+      ${statRow('🔥','Streak',D.streak+' kun')}
+      ${statRow('🍅','Pomodoro',D.pomodoro||0)}
+      ${statRow('💧','Suv',`${D.water||0}/${D.water_goal||8}`)}
+    </div>`;
+
+  const mh = (D.mood_history||[]).slice(-5);
+  document.getElementById('mood-hist').innerHTML = mh.length
+    ? mh.map(m=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+        <span>${m.ico} ${m.lbl}</span><span style="color:var(--muted)">${m.date}</span>
+      </div>`).join('')
+    : '<div class="empty">Kayfiyat tarixi yo\'q</div>';
+}
+
+function statRow(ico, lbl, val){
+  return `<div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px">
+    <div style="font-size:16px;margin-bottom:4px">${ico}</div>
+    <div style="font-size:13px;font-weight:800">${val}</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:2px">${lbl}</div>
+  </div>`;
+}
+
+// ── RANKING ──
+function renderRank(){
+  const medals = ['gold','silver','bronze'];
+  const mico   = ['🥇','🥈','🥉'];
+  document.getElementById('rlist').innerHTML = rankings.map((r,i)=>`
+    <div class="ritem">
+      <div class="rnum ${medals[i]||''}">${i<3?mico[i]:i+1}</div>
+      <div class="rava" style="background:${r.color}22;color:${r.color}">${r.name[0]}</div>
+      <div class="rinfo">
+        <div class="rname">${r.name}</div>
+        <div class="rclass">${r.cls}</div>
+      </div>
+      <div class="rscore">${r.score}</div>
+    </div>`).join('');
+}
+
+// ── MOOD ──
+function renderMood(){
+  document.getElementById('mood-grid').innerHTML = moods.map(m=>`
+    <div class="mcard" onclick="saveMood('${m.val}','${m.ico}','${m.lbl}')">
+      <div class="mico">${m.ico}</div>
+      <div class="mlbl">${m.lbl}</div>
+    </div>`).join('');
+}
+
+function saveMood(val, ico, lbl){
+  const history = D.mood_history||[];
+  history.push({val, ico, lbl, date: new Date().toLocaleDateString('uz-UZ')});
+  if(history.length>30) history.shift();
+  D.mood_history = history;
+  set('edu_data', D);
+
+  const msgs = {
+    great: '🌟 Ajoyib! Bugun hamma narsa yaxshi ketadi. Energiyangizni to\'liq ishlating!',
+    good:  '😊 Yaxshi kayfiyat — bu muvaffaqiyat kaliti. Davom eting!',
+    ok:    '😐 Normal. Ba\'zan shunday bo\'ladi. Kichik qadam tashlang — yaxshilanadi!',
+    tired: '😔 Charchoq normal. 5 daqiqa dam oling, suv iching — qaytib kelamiz!',
+    hard:  '💪 Qiyin kunlar ham o\'tadi. Siz kuchlisinsgiz! Bitta narsa qiling — bo\'ldi.',
+    angry: '🧘 Chuqur nafas oling. Siz bu his-tuyg\'ularni boshqara olasiz!',
+  };
+  document.getElementById('mood-resp-text').textContent = msgs[val]||'Kayfiyat saqlandi!';
+  document.getElementById('mood-resp').style.display = 'block';
+}
+
+// ── TABS ──
+function goTab(name, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const renders = {dash:renderDash, tasks:renderTasks, sched:renderSched,
+                   goals:renderGoals, stats:renderStats, rank:renderRank, mood:renderMood};
+  if(renders[name]) renders[name]();
+}
+
+// ── MODALS ──
+let curModal = null;
+function openM(type){
+  document.getElementById('mov').classList.add('open');
+  ['task','lesson','goal'].forEach(t=>
+    document.getElementById('m-'+t).style.display = t===type?'block':'none'
+  );
+  curModal = type;
+  const td = new Date().toISOString().split('T')[0];
+  if(type==='task')   document.getElementById('t-dl').value = td;
+  if(type==='goal')   document.getElementById('g-dl').value = td;
+}
+function closeM(e){
+  if(e.target===document.getElementById('mov'))
+    document.getElementById('mov').classList.remove('open');
+}
+
+function addTask(){
+  const sub = document.getElementById('t-sub').value.trim();
+  const ttl = document.getElementById('t-ttl').value.trim();
+  const dl  = document.getElementById('t-dl').value;
+  const pr  = document.getElementById('t-pr').value;
+  if(!sub||!ttl) return;
+  (D.tasks=D.tasks||[]).push({id:Date.now(), subject:sub, title:ttl, deadline:dl, priority:pr, done:false});
+  D.score=(D.score||0)+5; D.xp=(D.xp||0)+10;
+  set('edu_data', D);
+  document.getElementById('mov').classList.remove('open');
+  document.getElementById('t-sub').value='';
+  document.getElementById('t-ttl').value='';
+  renderTasks(); renderDash();
+}
+
+function addLesson(){
+  const day  = parseInt(document.getElementById('l-day').value);
+  const time = document.getElementById('l-time').value;
+  const sub  = document.getElementById('l-sub').value.trim();
+  const room = document.getElementById('l-room').value.trim();
+  if(!sub) return;
+  const colors = ['#8a6eff','#ff6eb4','#43e8b0','#ffb432','#b366ff','#f97316'];
+  const color  = colors[Math.floor(Math.random()*colors.length)];
+  const sched  = D.schedule=D.schedule||{};
+  if(!sched[day]) sched[day]=[];
+  sched[day].push({time, subject:sub, color, room});
+  sched[day].sort((a,b)=>a.time.localeCompare(b.time));
+  set('edu_data', D);
+  activeDay = day;
+  document.getElementById('mov').classList.remove('open');
+  document.getElementById('l-sub').value='';
+  document.getElementById('l-room').value='';
+  renderSched();
+}
+
+function addGoal(){
+  const ttl = document.getElementById('g-ttl').value.trim();
+  const dl  = document.getElementById('g-dl').value;
+  const ico = document.getElementById('g-ico').value.trim()||'🎯';
+  if(!ttl) return;
+  (D.goals=D.goals||[]).push({id:Date.now(), ico, title:ttl, deadline:dl, progress:0});
+  D.score=(D.score||0)+5;
+  set('edu_data', D);
+  document.getElementById('mov').classList.remove('open');
+  document.getElementById('g-ttl').value='';
+  document.getElementById('g-ico').value='';
+  renderGoals(); renderDash();
+}
+
+// ── UTILS ──
+function setBar(id, pct){
+  const el = document.getElementById(id);
+  if(el) el.style.width = Math.min(pct,100)+'%';
+}
+function setTxt(id, val){
+  const el = document.getElementById(id);
+  if(el) el.textContent = val;
+}
+
+// ── INIT ──
+renderHeader();
+renderDash();
+renderSched();
+renderMood();
+setTimeout(renderDash, 300);
+</script>
+</body>
+</html>

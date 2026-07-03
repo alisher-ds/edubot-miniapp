@@ -3,29 +3,138 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global stillar */
+/* Google Fonts import - Plus Jakarta Sans va JetBrains Mono */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* Global stillar - Premium Dark Mode Design System */
 @layer base {
   html {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    scroll-behavior: smooth;
   }
   
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-cosmic-950 text-white antialiased;
     min-height: 100vh;
+    /* Chuqur kosmik fon bilan nozik radial gradient */
+    background: 
+      radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 20% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 40%),
+      #020617;
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 3px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
   }
 }
 
-/* Komponent stillari */
+/* Glassmorphism 2.0 komponentlari */
 @layer components {
-  .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+  /* Suzuvchi karta effekti */
+  .glass-card {
+    @apply backdrop-blur-2xl bg-white/5 border border-white/10 rounded-2xl shadow-2xl;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  .btn-secondary {
-    @apply bg-secondary-600 hover:bg-secondary-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+  .glass-card:hover {
+    @apply scale-[1.02] border-electric-purple/50 shadow-glow;
+    transform: translateY(-2px);
+  }
+
+  /* Floating Dock - Bottom Navigation uchun */
+  .floating-dock {
+    @apply fixed bottom-4 left-4 right-4 mx-auto max-w-md;
+    @apply bg-black/60 backdrop-blur-xl;
+    @apply rounded-3xl border border-white/10;
+    @apply shadow-glass z-50;
+  }
+
+  /* Gradient matn */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-electric-purple via-electric-pink to-electric-violet;
+    @apply font-bold;
+  }
+
+  /* Progress bar with shine animation */
+  .progress-shine {
+    @apply relative overflow-hidden h-2 rounded-full bg-white/10;
   }
   
-  .card {
-    @apply bg-white rounded-xl shadow-md p-6 border border-gray-100;
+  .progress-shine::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: shine 2s linear infinite;
+  }
+
+  /* Glow button */
+  .btn-glow {
+    @apply bg-electric-purple hover:bg-electric-violet text-white font-semibold py-3 px-6 rounded-xl;
+    @apply transition-all duration-300 shadow-glow hover:shadow-glow-green;
+    @apply active:scale-95;
+  }
+
+  /* Ripple effect container */
+  .ripple-container {
+    @apply relative overflow-hidden;
+  }
+  
+  .ripple-container::after {
+    content: '';
+    @apply absolute inset-0 bg-white/20;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.3s, transform 0.3s;
+    border-radius: inherit;
+  }
+  
+  .ripple-container:active::after {
+    opacity: 1;
+    transform: scale(1);
+    transition: 0s;
+  }
+
+  /* Statistika raqamlari */
+  .stat-number {
+    @apply font-mono text-3xl md:text-4xl font-bold tracking-tight;
+  }
+
+  /* Active nav item glow */
+  .nav-active {
+    @apply text-electric-purple;
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
   }
 }

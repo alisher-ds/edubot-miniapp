@@ -1,51 +1,80 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import BottomNav from './components/layout/BottomNav'
+
+// Animation variants for staggered fade-in
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.16, 1, 0.3, 1]
+    }
+  }
+}
 
 // Asosiy sahifa komponenti - Premium Dark Mode
 function Home() {
   return (
-    <div className="space-y-6">
+    <motion.div 
+      className="space-y-6"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold gradient-text mb-2">Smart Tutor</h1>
-        <p className="text-gray-400 text-sm">ML o'rgatuvchi platformaga xush kelibsiz!</p>
-      </div>
+      <motion.div className="mb-8 pt-[60px]" variants={itemVariants}>
+        <h1 className="text-3xl font-bold text-white mb-2">Smart Tutor</h1>
+        <p className="text-slate-400 text-sm">ML o'rgatuvchi platformaga xush kelibsiz!</p>
+      </motion.div>
       
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-4">
+      <motion.div className="grid grid-cols-2 gap-6" variants={itemVariants}>
         <div className="glass-card">
           <div className="text-3xl mb-2">📚</div>
           <h3 className="font-semibold text-lg text-white">Darslar</h3>
-          <p className="text-sm text-gray-400 mono-number">12 ta mavzu</p>
+          <p className="text-sm text-slate-400 font-mono tabular-nums">12 ta mavzu</p>
         </div>
         
         <div className="glass-card">
           <div className="text-3xl mb-2">🎯</div>
           <h3 className="font-semibold text-lg text-white">Maqsadlar</h3>
-          <p className="text-sm text-gray-400 mono-number">5 ta faol</p>
+          <p className="text-sm text-slate-400 font-mono tabular-nums">5 ta faol</p>
         </div>
         
         <div className="glass-card">
           <div className="text-3xl mb-2">⭐</div>
           <h3 className="font-semibold text-lg text-white">Ball</h3>
-          <p className="text-sm text-gray-400 mono-number">1,250 XP</p>
+          <p className="text-sm text-slate-400 font-mono tabular-nums">1,250 XP</p>
         </div>
         
         <div className="glass-card">
           <div className="text-3xl mb-2">🔥</div>
           <h3 className="font-semibold text-lg text-white">Streak</h3>
-          <p className="text-sm text-gray-400 mono-number">7 kun</p>
+          <p className="text-sm text-slate-400 font-mono tabular-nums">7 kun</p>
         </div>
-      </div>
+      </motion.div>
       
       {/* Progress Section */}
-      <div className="glass-card mt-6">
+      <motion.div className="glass-card mt-6" variants={itemVariants}>
         <h2 className="text-lg font-semibold text-white mb-4">Bugungi progress</h2>
         <div className="space-y-3">
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-400">ML asoslari</span>
-              <span className="text-violet-400 mono-number">75%</span>
+              <span className="text-slate-400">ML asoslari</span>
+              <span className="text-violet-400 font-mono tabular-nums">75%</span>
             </div>
             <div className="progress-shine">
               <div 
@@ -56,8 +85,8 @@ function Home() {
           </div>
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-400">Neural tarmoqlar</span>
-              <span className="text-violet-400 mono-number">45%</span>
+              <span className="text-slate-400">Neural tarmoqlar</span>
+              <span className="text-violet-400 font-mono tabular-nums">45%</span>
             </div>
             <div className="progress-shine">
               <div 
@@ -67,8 +96,8 @@ function Home() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -82,16 +111,26 @@ function Lessons() {
   ]
   
   return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold gradient-text mb-6">Darslar</h1>
+    <motion.div 
+      className="space-y-4 pt-[60px]"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.h1 className="text-3xl font-bold text-white mb-6" variants={itemVariants}>Darslar</motion.h1>
       
-      {lessons.map((lesson) => (
-        <div key={lesson.id} className="glass-card">
+      {lessons.map((lesson, index) => (
+        <motion.div 
+          key={lesson.id} 
+          className="glass-card"
+          variants={itemVariants}
+          custom={index}
+        >
           <div className="flex items-center gap-3 mb-3">
             <span className="text-3xl">{lesson.icon}</span>
             <div className="flex-1">
               <h3 className="font-semibold text-lg text-white">{lesson.title}</h3>
-              <p className="text-sm text-gray-400">{lesson.progress}% tugallangan</p>
+              <p className="text-sm text-slate-400 font-mono tabular-nums">{lesson.progress}% tugallangan</p>
             </div>
           </div>
           <div className="progress-shine">
@@ -100,24 +139,29 @@ function Lessons() {
               style={{ width: `${lesson.progress}%` }}
             ></div>
           </div>
-        </div>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   )
 }
 
 // Oktagon sahifasi - Premium Dark Mode
 function Octagon() {
   return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold gradient-text mb-6">Oktagon</h1>
-      <div className="glass-card text-center py-12">
+    <motion.div 
+      className="space-y-4 pt-[60px]"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.h1 className="text-3xl font-bold text-white mb-6" variants={itemVariants}>Oktagon</motion.h1>
+      <motion.div className="glass-card text-center py-12" variants={itemVariants}>
         <div className="text-6xl mb-4 float-animation">🛡️</div>
         <h2 className="text-xl font-semibold text-white mb-2">Oktagon Challenge</h2>
-        <p className="text-gray-400 mb-6">8 ta yo'nalish bo'yicha bilimlaringizni sinab ko'ring</p>
-        <button className="btn-glow w-full ripple-container">Boshlash</button>
-      </div>
-    </div>
+        <p className="text-slate-400 mb-6">8 ta yo'nalish bo'yicha bilimlaringizni sinab ko'ring</p>
+        <button className="btn-press w-full py-3 px-4 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-xl text-white font-semibold">Boshlash</button>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -130,21 +174,26 @@ function Review() {
   ]
   
   return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold gradient-text mb-6">Takror</h1>
+    <motion.div 
+      className="space-y-4 pt-[60px]"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.h1 className="text-3xl font-bold text-white mb-6" variants={itemVariants}>Takror</motion.h1>
       
-      {reviews.map((review) => (
-        <div key={review.id} className="glass-card">
+      {reviews.map((review, index) => (
+        <motion.div key={review.id} className="glass-card" variants={itemVariants} custom={index}>
           <div className="flex justify-between items-center">
             <div>
               <h3 className="font-semibold text-white">{review.topic}</h3>
-              <p className="text-sm text-gray-400">{review.count} ta savol • {review.due}</p>
+              <p className="text-sm text-slate-400 font-mono tabular-nums">{review.count} ta savol • {review.due}</p>
             </div>
-            <button className="btn-glow text-sm px-4 py-2 ripple-container">Takrorlash</button>
+            <button className="btn-press text-sm px-4 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-xl text-white font-semibold">Takrorlash</button>
           </div>
-        </div>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   )
 }
 
@@ -161,91 +210,106 @@ function Mood() {
   ]
   
   return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold gradient-text mb-6">Ohang</h1>
+    <motion.div 
+      className="space-y-4 pt-[60px]"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.h1 className="text-3xl font-bold text-white mb-6" variants={itemVariants}>Ohang</motion.h1>
       
-      <div className="glass-card">
+      <motion.div className="glass-card" variants={itemVariants}>
         <h2 className="text-lg font-semibold text-white mb-4">Bugungi kayfiyatingiz qanday?</h2>
         <div className="grid grid-cols-3 gap-3">
           {moods.map((mood) => (
             <button
               key={mood.value}
               onClick={() => setSelectedMood(mood.value)}
-              className={`p-4 rounded-xl transition-all ripple-container ${
+              className={`btn-press p-4 rounded-xl transition-all ${
                 selectedMood === mood.value
                   ? 'bg-violet-500/20 border-2 border-violet-500'
                   : 'bg-white/5 border-2 border-transparent hover:bg-white/10'
               }`}
             >
               <div className="text-3xl mb-1">{mood.emoji}</div>
-              <div className="text-xs font-medium text-gray-300">{mood.label}</div>
+              <div className="text-xs font-medium text-slate-300">{mood.label}</div>
             </button>
           ))}
         </div>
         
         {selectedMood && (
-          <div className="mt-6 p-4 bg-green-500/20 border border-green-500/30 rounded-xl">
+          <motion.div 
+            className="mt-6 p-4 bg-green-500/20 border border-green-500/30 rounded-xl"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
             <p className="text-green-400 text-sm">
               ✓ Kayfiyatingiz saqlandi! Davom eting 🎉
             </p>
-          </div>
+          </motion.div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
 // Profil sahifasi - Premium Dark Mode
 function Profile() {
   return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold gradient-text mb-6">Men</h1>
+    <motion.div 
+      className="space-y-4 pt-[60px]"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.h1 className="text-3xl font-bold text-white mb-6" variants={itemVariants}>Men</motion.h1>
       
-      <div className="glass-card text-center">
+      <motion.div className="glass-card text-center" variants={itemVariants}>
         <div className="w-20 h-20 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl font-bold text-white">
           A
         </div>
         <h2 className="text-xl font-semibold text-white">Alisher</h2>
-        <p className="text-gray-400">9-sinf</p>
-      </div>
+        <p className="text-slate-400">9-sinf</p>
+      </motion.div>
       
-      <div className="glass-card">
+      <motion.div className="glass-card" variants={itemVariants}>
         <h3 className="font-semibold text-white mb-4">Statistika</h3>
         <div className="space-y-3">
           <div className="flex justify-between">
-            <span className="text-gray-400">Jami ball</span>
-            <span className="font-semibold text-white mono-number">1,250 XP</span>
+            <span className="text-slate-400">Jami ball</span>
+            <span className="font-semibold text-white font-mono tabular-nums">1,250 XP</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Daraja</span>
-            <span className="font-semibold text-white mono-number">Level 12</span>
+            <span className="text-slate-400">Daraja</span>
+            <span className="font-semibold text-white font-mono tabular-nums">Level 12</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Streak</span>
-            <span className="font-semibold text-white mono-number">7 kun 🔥</span>
+            <span className="text-slate-400">Streak</span>
+            <span className="font-semibold text-white font-mono tabular-nums">7 kun 🔥</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Tamomlangan darslar</span>
-            <span className="font-semibold text-white mono-number">24 ta</span>
+            <span className="text-slate-400">Tamomlangan darslar</span>
+            <span className="font-semibold text-white font-mono tabular-nums">24 ta</span>
           </div>
         </div>
-      </div>
+      </motion.div>
       
-      <div className="glass-card">
+      <motion.div className="glass-card" variants={itemVariants}>
         <h3 className="font-semibold text-white mb-4">Sozlamalar</h3>
         <div className="space-y-2">
-          <button className="w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-gray-300">
+          <button className="btn-press w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-slate-300">
             🔔 Bildirishnomalar
           </button>
-          <button className="w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-gray-300">
+          <button className="btn-press w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-slate-300">
             🌙 Tungi rejim
           </button>
-          <button className="w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-gray-300">
+          <button className="btn-press w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-slate-300">
             ❓ Yordam
           </button>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 

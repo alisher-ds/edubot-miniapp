@@ -6,60 +6,75 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'Plus Jakarta Sans', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
       colors: {
-        // Smart Tutor brand ranglari
-        primary: {
-          50: '#f5f3ff',
-          100: '#ede9fe',
-          200: '#ddd6fe',
-          300: '#c4b5fd',
+        // Global Backgrounds
+        cosmic: {
+          950: '#020617', // Chuqur kosmik qora
+          900: '#0f172a',
+        },
+        // Accent Colors
+        'electric-purple': {
+          DEFAULT: '#8b5cf6',
           400: '#a78bfa',
           500: '#8b5cf6',
-          600: '#7c3aed',
-          700: '#6d28d9',
-          800: '#5b21b6',
-          900: '#4c1d95',
         },
-        secondary: {
-          50: '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef',
-          600: '#c026d3',
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75',
+        'electric-pink': {
+          DEFAULT: '#ec4899',
+          400: '#f472b6',
+          500: '#ec4899',
         },
-        accent: {
-          50: '#fefce8',
-          100: '#fef9c3',
-          200: '#fef08a',
-          300: '#fde047',
-          400: '#facc15',
-          500: '#eab308',
-          600: '#ca8a04',
-          700: '#a16207',
-          800: '#854d0e',
-          900: '#713f12',
+        'neon-green': {
+          DEFAULT: '#10b981',
+          400: '#34d399',
+          500: '#10b981',
+        },
+        'electric-violet': {
+          DEFAULT: '#7c3aed',
+          400: '#8b5cf6',
+          500: '#7c3aed',
+        },
+        glass: {
+          bg: 'rgba(255, 255, 255, 0.05)',
+          border: 'rgba(255, 255, 255, 0.1)',
         }
       },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'hero-gradient': 'linear-gradient(to bottom right, #020617, #0f172a)',
+        'text-gradient': 'linear-gradient(to right, #a78bfa, #f472b6)',
+      },
+      boxShadow: {
+        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+        'glow': '0 0 20px rgba(139, 92, 246, 0.6)',
+        'glow-strong': '0 0 30px rgba(139, 92, 246, 0.8)',
+        'inner-light': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+      },
+      backdropBlur: {
+        xs: '2px',
+        '2xl': '40px',
       },
       animation: {
-        'fade-in': 'fadeIn 0.3s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out',
+        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'shine': 'shine 2s infinite linear',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'float': 'float 6s ease-in-out infinite',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        slideUp: {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+        shine: {
+          '0%': { backgroundPosition: '-200% center' },
+          '100%': { backgroundPosition: '200% center' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
         },
       },
     },

@@ -2,10 +2,10 @@
  * BottomNav komponenti - Premium Dark Mode Floating Dock 2026
  * Hanyu botidagagi 6 ta elementdan iborat:
  * - Asosiy (Home) - Home icon
- * - Darslar (Lessons) - Book icon
- * - Oktagon (Octagon) - Shield icon
- * - Takror (Review) - RefreshCw icon
- * - Ohang (Mood) - Smile icon
+ * - Darslar (Lessons) - BookOpen icon
+ * - Oktagon (Octagon) - ShieldCheck icon
+ * - Takror (Review) - RefreshCcw icon
+ * - Focus - Timer icon
  * - Men (Profile) - User icon
  * 
  * Features:
@@ -17,15 +17,15 @@
  */
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, BookOpen, Shield, RefreshCw, Smile, User } from 'lucide-react';
+import { Home, BookOpen, ShieldCheck, RefreshCcw, Timer, User } from 'lucide-react';
 
 function BottomNav({ activeTab, onTabChange }) {
   const tabs = [
     { id: 'home', icon: Home, label: 'Asosiy' },
     { id: 'lessons', icon: BookOpen, label: 'Darslar' },
-    { id: 'octagon', icon: Shield, label: 'Oktagon' },
-    { id: 'review', icon: RefreshCw, label: 'Takror' },
-    { id: 'mood', icon: Smile, label: 'Ohang' },
+    { id: 'octagon', icon: ShieldCheck, label: 'Oktagon' },
+    { id: 'review', icon: RefreshCcw, label: 'Takror' },
+    { id: 'focus', icon: Timer, label: 'Focus' },
     { id: 'profile', icon: User, label: 'Men' },
   ];
 

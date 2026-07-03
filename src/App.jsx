@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import BottomNav from './components/layout/BottomNav'
+import { BookOpen, Target, Trophy, Flame, BrainCircuit, Cpu, BarChart3, Code2, TableProperties, LineChart, Bell, Moon, CircleHelp, ChevronRight, LogOut, Timer, Headphones, Play, Pause } from 'lucide-react'
 
 // Animation variants for staggered fade-in
 const containerVariants = {
@@ -43,25 +44,25 @@ function Home() {
       {/* Stats Grid */}
       <motion.div className="grid grid-cols-2 gap-6" variants={itemVariants}>
         <div className="glass-card">
-          <div className="text-3xl mb-2">📚</div>
+          <BookOpen className="w-6 h-6 text-violet-400 stroke-[1.5] mb-2" />
           <h3 className="font-semibold text-lg text-white">Darslar</h3>
           <p className="text-sm text-slate-400 font-mono tabular-nums">12 ta mavzu</p>
         </div>
         
         <div className="glass-card">
-          <div className="text-3xl mb-2">🎯</div>
+          <Target className="w-6 h-6 text-violet-400 stroke-[1.5] mb-2" />
           <h3 className="font-semibold text-lg text-white">Maqsadlar</h3>
           <p className="text-sm text-slate-400 font-mono tabular-nums">5 ta faol</p>
         </div>
         
         <div className="glass-card">
-          <div className="text-3xl mb-2">⭐</div>
+          <Trophy className="w-6 h-6 text-violet-400 stroke-[1.5] mb-2" />
           <h3 className="font-semibold text-lg text-white">Ball</h3>
           <p className="text-sm text-slate-400 font-mono tabular-nums">1,250 XP</p>
         </div>
         
         <div className="glass-card">
-          <div className="text-3xl mb-2">🔥</div>
+          <Flame className="w-6 h-6 text-orange-500 stroke-[1.5] mb-2" />
           <h3 className="font-semibold text-lg text-white">Streak</h3>
           <p className="text-sm text-slate-400 font-mono tabular-nums">7 kun</p>
         </div>
@@ -104,10 +105,12 @@ function Home() {
 // Darslar sahifasi - Premium Dark Mode
 function Lessons() {
   const lessons = [
-    { id: 1, title: 'ML asoslari', progress: 75, icon: '🤖' },
-    { id: 2, title: 'Neural tarmoqlar', progress: 45, icon: '🧠' },
-    { id: 3, title: 'Data Science', progress: 30, icon: '📊' },
-    { id: 4, title: 'Python dasturlash', progress: 90, icon: '🐍' },
+    { id: 1, title: 'ML asoslari', progress: 75, icon: BrainCircuit },
+    { id: 2, title: 'Neural tarmoqlar', progress: 45, icon: Cpu },
+    { id: 3, title: 'Data Science', progress: 30, icon: BarChart3 },
+    { id: 4, title: 'Python dasturlash', progress: 90, icon: Code2 },
+    { id: 5, title: 'NumPy & Pandas', progress: 60, icon: TableProperties },
+    { id: 6, title: 'Matplotlib', progress: 25, icon: LineChart },
   ]
   
   return (
@@ -127,17 +130,19 @@ function Lessons() {
           custom={index}
         >
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-3xl">{lesson.icon}</span>
+            <lesson.icon className="w-6 h-6 text-violet-400 stroke-[1.5] flex-shrink-0" />
             <div className="flex-1">
               <h3 className="font-semibold text-lg text-white">{lesson.title}</h3>
               <p className="text-sm text-slate-400 font-mono tabular-nums">{lesson.progress}% tugallangan</p>
             </div>
           </div>
-          <div className="progress-shine">
-            <div 
-              className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
-              style={{ width: `${lesson.progress}%` }}
-            ></div>
+          <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+            <div className="progress-shine h-full">
+              <div 
+                className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
+                style={{ width: `${lesson.progress}%` }}
+              ></div>
+            </div>
           </div>
         </motion.div>
       ))}
@@ -197,18 +202,24 @@ function Review() {
   )
 }
 
-// Ohang (Kayfiyat) sahifasi - Premium Dark Mode
-function Mood() {
-  const [selectedMood, setSelectedMood] = useState(null)
+// Focus Mode sahifasi - Premium Dark Mode (Pomodoro taymer)
+function FocusMode() {
+  const [isActive, setIsActive] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(25 * 60) // 25 daqiqa soniyada
+  const [mode, setMode] = useState('work') // 'work' yoki 'break'
+
+  const toggleTimer = () => setIsActive(!isActive)
   
-  const moods = [
-    { emoji: '😄', label: 'Zo\'r!', value: 'great' },
-    { emoji: '😊', label: 'Yaxshi', value: 'good' },
-    { emoji: '😐', label: 'Normal', value: 'ok' },
-    { emoji: '😔', label: 'Charchagan', value: 'tired' },
-    { emoji: '😫', label: 'Qiyin', value: 'hard' },
-  ]
-  
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }
+
+  const progress = mode === 'work' 
+    ? ((25 * 60 - timeLeft) / (25 * 60)) * 100 
+    : ((5 * 60 - timeLeft) / (5 * 60)) * 100
+
   return (
     <motion.div 
       className="space-y-4 pt-[60px]"
@@ -216,39 +227,83 @@ function Mood() {
       initial="hidden"
       animate="visible"
     >
-      <motion.h1 className="text-3xl font-bold text-white mb-6" variants={itemVariants}>Ohang</motion.h1>
+      <motion.h1 className="text-3xl font-bold text-white mb-6" variants={itemVariants}>Focus Mode</motion.h1>
       
-      <motion.div className="glass-card" variants={itemVariants}>
-        <h2 className="text-lg font-semibold text-white mb-4">Bugungi kayfiyatingiz qanday?</h2>
-        <div className="grid grid-cols-3 gap-3">
-          {moods.map((mood) => (
-            <button
-              key={mood.value}
-              onClick={() => setSelectedMood(mood.value)}
-              className={`btn-press p-4 rounded-xl transition-all ${
-                selectedMood === mood.value
-                  ? 'bg-violet-500/20 border-2 border-violet-500'
-                  : 'bg-white/5 border-2 border-transparent hover:bg-white/10'
-              }`}
-            >
-              <div className="text-3xl mb-1">{mood.emoji}</div>
-              <div className="text-xs font-medium text-slate-300">{mood.label}</div>
-            </button>
-          ))}
+      <motion.div className="glass-card text-center py-8" variants={itemVariants}>
+        <div className="mb-6">
+          <p className="text-slate-400 text-sm mb-2">{mode === 'work' ? 'Diqqatni jamlash vaqti' : 'Dam olish vaqti'}</p>
+          <Headphones className="w-8 h-8 text-violet-400 mx-auto mb-4 stroke-[1.5]" />
         </div>
         
-        {selectedMood && (
-          <motion.div 
-            className="mt-6 p-4 bg-green-500/20 border border-green-500/30 rounded-xl"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+        {/* Aylana taymer */}
+        <div className="relative w-48 h-48 mx-auto mb-8">
+          <svg className="w-full h-full transform -rotate-90">
+            <circle
+              cx="96"
+              cy="96"
+              r="88"
+              fill="none"
+              stroke="rgba(255,255,255,0.1)"
+              strokeWidth="8"
+            />
+            <circle
+              cx="96"
+              cy="96"
+              r="88"
+              fill="none"
+              stroke="url(#gradient)"
+              strokeWidth="8"
+              strokeLinecap="round"
+              strokeDasharray={2 * Math.PI * 88}
+              strokeDashoffset={2 * Math.PI * 88 * (1 - progress / 100)}
+              className="transition-all duration-1000"
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#8b5cf6" />
+                <stop offset="100%" stopColor="#d946ef" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-4xl font-mono font-bold text-white tabular-nums">{formatTime(timeLeft)}</span>
+          </div>
+        </div>
+        
+        {/* Tugmalar */}
+        <div className="flex gap-4 justify-center mb-6">
+          <button
+            onClick={toggleTimer}
+            className="btn-press px-8 py-3 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-xl text-white font-semibold flex items-center gap-2"
           >
-            <p className="text-green-400 text-sm">
-              ✓ Kayfiyatingiz saqlandi! Davom eting 🎉
-            </p>
-          </motion.div>
-        )}
+            {isActive ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+            {isActive ? 'Pause' : 'Start Focus'}
+          </button>
+        </div>
+        
+        {/* Mode switch */}
+        <div className="flex gap-2 justify-center">
+          <button
+            onClick={() => { setMode('work'); setTimeLeft(25 * 60); setIsActive(false); }}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              mode === 'work' 
+                ? 'bg-violet-500/20 text-violet-400 border border-violet-500/50' 
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            25 min Ish
+          </button>
+          <button
+            onClick={() => { setMode('break'); setTimeLeft(5 * 60); setIsActive(false); }}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              mode === 'break' 
+                ? 'bg-green-500/20 text-green-400 border border-green-500/50' 
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            5 min Dam
+          </button>
+        </div>
       </motion.div>
     </motion.div>
   )
@@ -256,6 +311,9 @@ function Mood() {
 
 // Profil sahifasi - Premium Dark Mode
 function Profile() {
+  const [notifications, setNotifications] = useState(true)
+  const [darkMode, setDarkMode] = useState(true)
+
   return (
     <motion.div 
       className="space-y-4 pt-[60px]"
@@ -286,7 +344,7 @@ function Profile() {
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Streak</span>
-            <span className="font-semibold text-white font-mono tabular-nums">7 kun 🔥</span>
+            <span className="font-semibold text-white font-mono tabular-nums flex items-center gap-1">7 kun <Flame className="w-4 h-4 text-orange-500 stroke-[1.5]" /></span>
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Tamomlangan darslar</span>
@@ -297,16 +355,59 @@ function Profile() {
       
       <motion.div className="glass-card" variants={itemVariants}>
         <h3 className="font-semibold text-white mb-4">Sozlamalar</h3>
-        <div className="space-y-2">
-          <button className="btn-press w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-slate-300">
-            🔔 Bildirishnomalar
-          </button>
-          <button className="btn-press w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-slate-300">
-            🌙 Tungi rejim
-          </button>
-          <button className="btn-press w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-slate-300">
-            ❓ Yordam
-          </button>
+        <div className="space-y-0">
+          {/* Bildirishnomalar */}
+          <div className="flex items-center justify-between py-3 border-b border-white/5">
+            <div className="flex items-center gap-3">
+              <Bell className="w-5 h-5 text-slate-400 stroke-[1.5]" />
+              <span className="text-slate-300">Bildirishnomalar</span>
+            </div>
+            <button
+              onClick={() => setNotifications(!notifications)}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                notifications ? 'bg-violet-500' : 'bg-white/20'
+              }`}
+            >
+              <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                notifications ? 'translate-x-6' : 'translate-x-0'
+              }`} />
+            </button>
+          </div>
+          
+          {/* Tungi rejim */}
+          <div className="flex items-center justify-between py-3 border-b border-white/5">
+            <div className="flex items-center gap-3">
+              <Moon className="w-5 h-5 text-slate-400 stroke-[1.5]" />
+              <span className="text-slate-300">Tungi rejim</span>
+            </div>
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                darkMode ? 'bg-violet-500' : 'bg-white/20'
+              }`}
+            >
+              <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                darkMode ? 'translate-x-6' : 'translate-x-0'
+              }`} />
+            </button>
+          </div>
+          
+          {/* Yordam */}
+          <div className="flex items-center justify-between py-3 border-b border-white/5">
+            <div className="flex items-center gap-3">
+              <CircleHelp className="w-5 h-5 text-slate-400 stroke-[1.5]" />
+              <span className="text-slate-300">Yordam</span>
+            </div>
+            <ChevronRight className="w-5 h-5 text-slate-400 stroke-[1.5]" />
+          </div>
+          
+          {/* Chiqish */}
+          <div className="flex items-center justify-between py-3 mt-2">
+            <div className="flex items-center gap-3">
+              <LogOut className="w-5 h-5 text-red-400 stroke-[1.5]" />
+              <span className="text-red-400">Chiqish</span>
+            </div>
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -327,8 +428,8 @@ function App() {
         return <Octagon />
       case 'review':
         return <Review />
-      case 'mood':
-        return <Mood />
+      case 'focus':
+        return <FocusMode />
       case 'profile':
         return <Profile />
       default:

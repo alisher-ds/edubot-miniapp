@@ -1,0 +1,111 @@
+/* 
+ * Smart Tutor Design Tokens
+ * 2026 EdTech Premium Standard
+ * 
+ * Ranglar: Deep Space aesthetic, jiddiy va professional
+ * Animatsiyalar: Smooth & Elegant, cubic-bezier easing
+ * Typography: Plus Jakarta Sans + JetBrains Mono
+ */
+
+:root {
+  /* --- FON RANGLARI --- */
+  --color-bg-primary: #020617; /* Deep Space Black */
+  --color-bg-secondary: #0f172a; /* Slate 900 - kartalar uchun */
+  --color-bg-tertiary: #1e293b; /* Slate 800 - hover uchun */
+
+  /* --- ACCENT RANGLAR --- */
+  --color-accent-primary: #8b5cf6; /* Electric Violet */
+  --color-accent-secondary: #06b6d4; /* Cyber Cyan */
+  --color-accent-gradient-start: #8b5cf6;
+  --color-accent-gradient-end: #06b6d4;
+
+  /* --- STATUS RANGLAR --- */
+  --color-success: #10b981; /* Neon Emerald */
+  --color-warning: #f59e0b; /* Amber */
+  --color-error: #ef4444; /* Red (kerak bo'lsa) */
+  --color-info: #3b82f6; /* Blue */
+
+  /* --- GLASSMORPHISM --- */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(139, 92, 246, 0.5); /* Electric Violet glow */
+  --glass-blur: 40px; /* backdrop-blur-2xl */
+
+  /* --- TYPOGRAPHY --- */
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* --- ANIMATSIYA EASING --- */
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- SHADOWS --- */
+  --shadow-glow-soft: 0 0 20px rgba(139, 92, 246, 0.3);
+  --shadow-glow-strong: 0 0 40px rgba(139, 92, 246, 0.6);
+  --shadow-glow-success: 0 0 20px rgba(16, 185, 129, 0.4);
+  --shadow-inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  /* --- BORDER RADIUS --- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* --- TRANSITION --- */
+  --transition-fast: 150ms var(--ease-smooth);
+  --transition-normal: 300ms var(--ease-smooth);
+  --transition-slow: 500ms var(--ease-smooth);
+}
+
+/* Global reset va default stillar */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* Scrollbar customizatsiyasi */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-primary);
+}
+
+/* Selection rangi */
+::selection {
+  background: var(--color-accent-primary);
+  color: white;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}

@@ -14,15 +14,16 @@
   }
   
   body {
-    @apply bg-cosmic-950 text-white antialiased;
-    min-height: 100vh;
-    /* Chuqur kosmik fon bilan nozik radial gradient */
-    background: 
-      radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 20% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 40%),
-      #020617;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #020617; /* Deep Cosmic Black */
+    color: #ffffff;
     overflow-x: hidden;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+    min-height: 100vh;
   }
 
   /* Custom scrollbar */
@@ -31,54 +32,75 @@
   }
   
   ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.02);
+    background: #020617;
   }
   
   ::-webkit-scrollbar-thumb {
-    background: rgba(139, 92, 246, 0.3);
-    border-radius: 3px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
     background: rgba(139, 92, 246, 0.5);
+    border-radius: 10px;
   }
 }
 
 /* Glassmorphism 2.0 komponentlari */
 @layer components {
-  /* Suzuvchi karta effekti */
+  /* Suzuvchi karta effekti - Aniq CSS qiymatlari bilan */
   .glass-card {
-    @apply backdrop-blur-2xl bg-white/5 border border-white/10 rounded-2xl shadow-2xl;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   }
   
   .glass-card:hover {
-    @apply scale-[1.02] border-electric-purple/50 shadow-glow;
-    transform: translateY(-2px);
+    transform: scale(1.02);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 8px 40px rgba(139, 92, 246, 0.2);
   }
 
   /* Floating Dock - Bottom Navigation uchun */
   .floating-dock {
-    @apply fixed bottom-4 left-4 right-4 mx-auto max-w-md;
-    @apply bg-black/60 backdrop-blur-xl;
-    @apply rounded-3xl border border-white/10;
-    @apply shadow-glass z-50;
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 28rem;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 50;
   }
 
   /* Gradient matn */
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-electric-purple via-electric-pink to-electric-violet;
-    @apply font-bold;
+    background: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
   }
 
   /* Progress bar with shine animation */
   .progress-shine {
-    @apply relative overflow-hidden h-2 rounded-full bg-white/10;
+    position: relative;
+    overflow: hidden;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.1);
   }
   
   .progress-shine::after {
     content: '';
-    @apply absolute inset-0;
+    position: absolute;
+    inset: 0;
     background: linear-gradient(
       90deg,
       transparent,
@@ -91,19 +113,35 @@
 
   /* Glow button */
   .btn-glow {
-    @apply bg-electric-purple hover:bg-electric-violet text-white font-semibold py-3 px-6 rounded-xl;
-    @apply transition-all duration-300 shadow-glow hover:shadow-glow-green;
-    @apply active:scale-95;
+    background-color: #8b5cf6;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+  }
+  
+  .btn-glow:hover {
+    background-color: #7c3aed;
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+  }
+  
+  .btn-glow:active {
+    transform: scale(0.95);
   }
 
   /* Ripple effect container */
   .ripple-container {
-    @apply relative overflow-hidden;
+    position: relative;
+    overflow: hidden;
   }
   
   .ripple-container::after {
     content: '';
-    @apply absolute inset-0 bg-white/20;
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.2);
     opacity: 0;
     transform: scale(0.5);
     transition: opacity 0.3s, transform 0.3s;
@@ -118,12 +156,15 @@
 
   /* Statistika raqamlari */
   .stat-number {
-    @apply font-mono text-3xl md:text-4xl font-bold tracking-tight;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
   }
 
   /* Active nav item glow */
   .nav-active {
-    @apply text-electric-purple;
+    color: #8b5cf6;
     text-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
   }
 }
@@ -136,5 +177,24 @@
   
   .animate-float {
     animation: float 6s ease-in-out infinite;
+  }
+}
+
+/* Animations */
+@keyframes shine {
+  0% {
+    background-position: -200%;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }

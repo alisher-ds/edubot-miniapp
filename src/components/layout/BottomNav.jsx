@@ -1,6 +1,6 @@
 /**
  * BottomNav komponenti - Premium Dark Mode Floating Dock
- * Hanyu botidagidek 6 ta elementdan iborat:
+ * Hanyu botidagagi 6 ta elementdan iborat:
  * - Asosiy (Home) - Home icon
  * - Darslar (Lessons) - Book icon
  * - Oktagon (Octagon) - Shield icon
@@ -19,7 +19,7 @@
 import { motion } from 'framer-motion';
 import { Home, BookOpen, Shield, RefreshCw, Smile, User } from 'lucide-react';
 
-function BottomNav({ activeTab, setActiveTab }) {
+function BottomNav({ activeTab, onTabChange }) {
   const tabs = [
     { id: 'home', icon: Home, label: 'Asosiy' },
     { id: 'lessons', icon: BookOpen, label: 'Darslar' },
@@ -39,7 +39,7 @@ function BottomNav({ activeTab, setActiveTab }) {
           return (
             <motion.button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => onTabChange(tab.id)}
               className={`relative flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 ${
                 isActive ? 'nav-active' : 'text-gray-400 hover:text-white'
               }`}
@@ -50,7 +50,7 @@ function BottomNav({ activeTab, setActiveTab }) {
               {isActive && (
                 <motion.div
                   layoutId="activeGlow"
-                  className="absolute inset-0 bg-electric-purple/20 rounded-2xl"
+                  className="absolute inset-0 bg-violet-500/20 rounded-2xl"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -81,7 +81,7 @@ function BottomNav({ activeTab, setActiveTab }) {
                   scale: isActive ? 1 : 0.9,
                 }}
                 className={`relative z-10 text-[10px] font-medium mt-1 hidden sm:block ${
-                  isActive ? 'text-electric-purple' : 'text-gray-400'
+                  isActive ? 'text-violet-400' : 'text-gray-400'
                 }`}
               >
                 {tab.label}

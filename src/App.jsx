@@ -1,43 +1,78 @@
 import { useState } from 'react'
 import BottomNav from './components/layout/BottomNav'
 
-// Asosiy sahifa komponenti
+// Asosiy sahifa komponenti - Premium Dark Mode
 function Home() {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-primary-700">Smart Tutor</h1>
-      <p className="text-gray-600">ML o'rgatuvchi platformaga xush kelibsiz!</p>
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold gradient-text mb-2">Smart Tutor</h1>
+        <p className="text-gray-400 text-sm">ML o'rgatuvchi platformaga xush kelibsiz!</p>
+      </div>
       
+      {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="card">
+        <div className="glass-card">
           <div className="text-3xl mb-2">📚</div>
-          <h3 className="font-semibold text-lg">Darslar</h3>
-          <p className="text-sm text-gray-500">12 ta mavzu</p>
+          <h3 className="font-semibold text-lg text-white">Darslar</h3>
+          <p className="text-sm text-gray-400 mono-number">12 ta mavzu</p>
         </div>
         
-        <div className="card">
+        <div className="glass-card">
           <div className="text-3xl mb-2">🎯</div>
-          <h3 className="font-semibold text-lg">Maqsadlar</h3>
-          <p className="text-sm text-gray-500">5 ta faol</p>
+          <h3 className="font-semibold text-lg text-white">Maqsadlar</h3>
+          <p className="text-sm text-gray-400 mono-number">5 ta faol</p>
         </div>
         
-        <div className="card">
+        <div className="glass-card">
           <div className="text-3xl mb-2">⭐</div>
-          <h3 className="font-semibold text-lg">Ball</h3>
-          <p className="text-sm text-gray-500">1,250 XP</p>
+          <h3 className="font-semibold text-lg text-white">Ball</h3>
+          <p className="text-sm text-gray-400 mono-number">1,250 XP</p>
         </div>
         
-        <div className="card">
+        <div className="glass-card">
           <div className="text-3xl mb-2">🔥</div>
-          <h3 className="font-semibold text-lg">Streak</h3>
-          <p className="text-sm text-gray-500">7 kun</p>
+          <h3 className="font-semibold text-lg text-white">Streak</h3>
+          <p className="text-sm text-gray-400 mono-number">7 kun</p>
+        </div>
+      </div>
+      
+      {/* Progress Section */}
+      <div className="glass-card mt-6">
+        <h2 className="text-lg font-semibold text-white mb-4">Bugungi progress</h2>
+        <div className="space-y-3">
+          <div>
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-gray-400">ML asoslari</span>
+              <span className="text-violet-400 mono-number">75%</span>
+            </div>
+            <div className="progress-shine">
+              <div 
+                className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
+                style={{ width: '75%' }}
+              ></div>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-gray-400">Neural tarmoqlar</span>
+              <span className="text-violet-400 mono-number">45%</span>
+            </div>
+            <div className="progress-shine">
+              <div 
+                className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
+                style={{ width: '45%' }}
+              ></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-// Darslar sahifasi
+// Darslar sahifasi - Premium Dark Mode
 function Lessons() {
   const lessons = [
     { id: 1, title: 'ML asoslari', progress: 75, icon: '🤖' },
@@ -48,20 +83,20 @@ function Lessons() {
   
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-primary-700">Darslar</h1>
+      <h1 className="text-3xl font-bold gradient-text mb-6">Darslar</h1>
       
       {lessons.map((lesson) => (
-        <div key={lesson.id} className="card">
+        <div key={lesson.id} className="glass-card">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-3xl">{lesson.icon}</span>
-            <div>
-              <h3 className="font-semibold text-lg">{lesson.title}</h3>
-              <p className="text-sm text-gray-500">{lesson.progress}% tugallangan</p>
+            <div className="flex-1">
+              <h3 className="font-semibold text-lg text-white">{lesson.title}</h3>
+              <p className="text-sm text-gray-400">{lesson.progress}% tugallangan</p>
             </div>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="progress-shine">
             <div 
-              className="bg-primary-600 h-2 rounded-full transition-all duration-300"
+              className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
               style={{ width: `${lesson.progress}%` }}
             ></div>
           </div>
@@ -71,22 +106,22 @@ function Lessons() {
   )
 }
 
-// Oktagon sahifasi
+// Oktagon sahifasi - Premium Dark Mode
 function Octagon() {
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-primary-700">Oktagon</h1>
-      <div className="card text-center py-12">
-        <div className="text-6xl mb-4">🛡️</div>
-        <h2 className="text-xl font-semibold mb-2">Oktagon Challenge</h2>
-        <p className="text-gray-600 mb-6">8 ta yo'nalish bo'yicha bilimlaringizni sinab ko'ring</p>
-        <button className="btn-primary w-full">Boshlash</button>
+      <h1 className="text-3xl font-bold gradient-text mb-6">Oktagon</h1>
+      <div className="glass-card text-center py-12">
+        <div className="text-6xl mb-4 float-animation">🛡️</div>
+        <h2 className="text-xl font-semibold text-white mb-2">Oktagon Challenge</h2>
+        <p className="text-gray-400 mb-6">8 ta yo'nalish bo'yicha bilimlaringizni sinab ko'ring</p>
+        <button className="btn-glow w-full ripple-container">Boshlash</button>
       </div>
     </div>
   )
 }
 
-// Takror sahifasi
+// Takror sahifasi - Premium Dark Mode
 function Review() {
   const reviews = [
     { id: 1, topic: 'Supervised Learning', due: 'Bugun', count: 15 },
@@ -96,16 +131,16 @@ function Review() {
   
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-primary-700">Takror</h1>
+      <h1 className="text-3xl font-bold gradient-text mb-6">Takror</h1>
       
       {reviews.map((review) => (
-        <div key={review.id} className="card">
+        <div key={review.id} className="glass-card">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="font-semibold">{review.topic}</h3>
-              <p className="text-sm text-gray-500">{review.count} ta savol • {review.due}</p>
+              <h3 className="font-semibold text-white">{review.topic}</h3>
+              <p className="text-sm text-gray-400">{review.count} ta savol • {review.due}</p>
             </div>
-            <button className="btn-secondary text-sm px-3 py-1">Takrorlash</button>
+            <button className="btn-glow text-sm px-4 py-2 ripple-container">Takrorlash</button>
           </div>
         </div>
       ))}
@@ -113,7 +148,7 @@ function Review() {
   )
 }
 
-// Ohang (Kayfiyat) sahifasi
+// Ohang (Kayfiyat) sahifasi - Premium Dark Mode
 function Mood() {
   const [selectedMood, setSelectedMood] = useState(null)
   
@@ -127,30 +162,30 @@ function Mood() {
   
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-primary-700">Ohang</h1>
+      <h1 className="text-3xl font-bold gradient-text mb-6">Ohang</h1>
       
-      <div className="card">
-        <h2 className="text-lg font-semibold mb-4">Bugungi kayfiyatingiz qanday?</h2>
+      <div className="glass-card">
+        <h2 className="text-lg font-semibold text-white mb-4">Bugungi kayfiyatingiz qanday?</h2>
         <div className="grid grid-cols-3 gap-3">
           {moods.map((mood) => (
             <button
               key={mood.value}
               onClick={() => setSelectedMood(mood.value)}
-              className={`p-4 rounded-xl transition-all ${
+              className={`p-4 rounded-xl transition-all ripple-container ${
                 selectedMood === mood.value
-                  ? 'bg-primary-100 border-2 border-primary-500'
-                  : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
+                  ? 'bg-violet-500/20 border-2 border-violet-500'
+                  : 'bg-white/5 border-2 border-transparent hover:bg-white/10'
               }`}
             >
               <div className="text-3xl mb-1">{mood.emoji}</div>
-              <div className="text-xs font-medium">{mood.label}</div>
+              <div className="text-xs font-medium text-gray-300">{mood.label}</div>
             </button>
           ))}
         </div>
         
         {selectedMood && (
-          <div className="mt-6 p-4 bg-green-50 rounded-lg">
-            <p className="text-green-700 text-sm">
+          <div className="mt-6 p-4 bg-green-500/20 border border-green-500/30 rounded-xl">
+            <p className="text-green-400 text-sm">
               ✓ Kayfiyatingiz saqlandi! Davom eting 🎉
             </p>
           </div>
@@ -160,52 +195,52 @@ function Mood() {
   )
 }
 
-// Profil sahifasi
+// Profil sahifasi - Premium Dark Mode
 function Profile() {
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-primary-700">Men</h1>
+      <h1 className="text-3xl font-bold gradient-text mb-6">Men</h1>
       
-      <div className="card text-center">
-        <div className="w-20 h-20 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl font-bold text-primary-600">
+      <div className="glass-card text-center">
+        <div className="w-20 h-20 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl font-bold text-white">
           A
         </div>
-        <h2 className="text-xl font-semibold">Alisher</h2>
-        <p className="text-gray-500">9-sinf</p>
+        <h2 className="text-xl font-semibold text-white">Alisher</h2>
+        <p className="text-gray-400">9-sinf</p>
       </div>
       
-      <div className="card">
-        <h3 className="font-semibold mb-4">Statistika</h3>
+      <div className="glass-card">
+        <h3 className="font-semibold text-white mb-4">Statistika</h3>
         <div className="space-y-3">
           <div className="flex justify-between">
-            <span className="text-gray-600">Jami ball</span>
-            <span className="font-semibold">1,250 XP</span>
+            <span className="text-gray-400">Jami ball</span>
+            <span className="font-semibold text-white mono-number">1,250 XP</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Daraja</span>
-            <span className="font-semibold">Level 12</span>
+            <span className="text-gray-400">Daraja</span>
+            <span className="font-semibold text-white mono-number">Level 12</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Streak</span>
-            <span className="font-semibold">7 kun 🔥</span>
+            <span className="text-gray-400">Streak</span>
+            <span className="font-semibold text-white mono-number">7 kun 🔥</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Tamomlangan darslar</span>
-            <span className="font-semibold">24 ta</span>
+            <span className="text-gray-400">Tamomlangan darslar</span>
+            <span className="font-semibold text-white mono-number">24 ta</span>
           </div>
         </div>
       </div>
       
-      <div className="card">
-        <h3 className="font-semibold mb-4">Sozlamalar</h3>
+      <div className="glass-card">
+        <h3 className="font-semibold text-white mb-4">Sozlamalar</h3>
         <div className="space-y-2">
-          <button className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors">
+          <button className="w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-gray-300">
             🔔 Bildirishnomalar
           </button>
-          <button className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors">
+          <button className="w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-gray-300">
             🌙 Tungi rejim
           </button>
-          <button className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors">
+          <button className="w-full text-left p-3 hover:bg-white/10 rounded-xl transition-colors text-gray-300">
             ❓ Yordam
           </button>
         </div>
@@ -238,7 +273,7 @@ function App() {
   }
   
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen pb-24">
       {/* Asosiy kontent */}
       <main className="p-4">
         {renderPage()}

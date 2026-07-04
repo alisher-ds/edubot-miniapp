@@ -45,53 +45,53 @@ function Home() {
       <motion.div className="grid grid-cols-2 gap-6" variants={itemVariants}>
         <div className="glass-card">
           <BookOpen className="w-6 h-6 text-violet-400 stroke-[1.5] mb-2" />
-          <h3 className="font-semibold text-lg text-white">Darslar</h3>
-          <p className="text-sm text-slate-400 font-mono tabular-nums">12 ta mavzu</p>
+          <h3 className="font-semibold text-lg text-white mb-1">Darslar</h3>
+          <p className="text-slate-300 font-mono tabular-nums">12 ta mavzu</p>
         </div>
         
         <div className="glass-card">
           <Target className="w-6 h-6 text-violet-400 stroke-[1.5] mb-2" />
-          <h3 className="font-semibold text-lg text-white">Maqsadlar</h3>
-          <p className="text-sm text-slate-400 font-mono tabular-nums">5 ta faol</p>
+          <h3 className="font-semibold text-lg text-white mb-1">Maqsadlar</h3>
+          <p className="text-slate-300 font-mono tabular-nums">5 ta faol</p>
         </div>
         
         <div className="glass-card">
           <Trophy className="w-6 h-6 text-violet-400 stroke-[1.5] mb-2" />
-          <h3 className="font-semibold text-lg text-white">Ball</h3>
-          <p className="text-sm text-slate-400 font-mono tabular-nums">1,250 XP</p>
+          <h3 className="font-semibold text-lg text-white mb-1">Ball</h3>
+          <p className="text-slate-300 font-mono tabular-nums">1,250 XP</p>
         </div>
         
         <div className="glass-card">
           <Flame className="w-6 h-6 text-orange-500 stroke-[1.5] mb-2" />
-          <h3 className="font-semibold text-lg text-white">Streak</h3>
-          <p className="text-sm text-slate-400 font-mono tabular-nums">7 kun</p>
+          <h3 className="font-semibold text-lg text-white mb-1">Streak</h3>
+          <p className="text-slate-300 font-mono tabular-nums">7 kun</p>
         </div>
       </motion.div>
       
       {/* Progress Section */}
       <motion.div className="glass-card mt-6" variants={itemVariants}>
         <h2 className="text-lg font-semibold text-white mb-4">Bugungi progress</h2>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-slate-400">ML asoslari</span>
+            <div className="flex justify-between text-sm mb-2">
+              <span className="text-slate-300 font-medium">ML asoslari</span>
               <span className="text-violet-400 font-mono tabular-nums">75%</span>
             </div>
-            <div className="progress-shine">
+            <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden progress-shine">
               <div 
-                className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-1000 ease-in-out"
                 style={{ width: '75%' }}
               ></div>
             </div>
           </div>
           <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-slate-400">Neural tarmoqlar</span>
+            <div className="flex justify-between text-sm mb-2">
+              <span className="text-slate-300 font-medium">Neural tarmoqlar</span>
               <span className="text-violet-400 font-mono tabular-nums">45%</span>
             </div>
-            <div className="progress-shine">
+            <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden progress-shine">
               <div 
-                className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-1000 ease-in-out"
                 style={{ width: '45%' }}
               ></div>
             </div>

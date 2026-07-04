@@ -43,26 +43,34 @@ function Home() {
       
       {/* Stats Grid */}
       <motion.div className="grid grid-cols-2 gap-6" variants={itemVariants}>
-        <div className="glass-card">
-          <BookOpen className="w-6 h-6 text-violet-400 stroke-[1.5] mb-2" />
+        <div className="glass-card p-6">
+          <div className="icon-container mb-3">
+            <BookOpen className="w-6 h-6 text-violet-400" />
+          </div>
           <h3 className="font-semibold text-lg text-white mb-1">Darslar</h3>
           <p className="text-slate-300 font-mono tabular-nums">12 ta mavzu</p>
         </div>
         
-        <div className="glass-card">
-          <Target className="w-6 h-6 text-violet-400 stroke-[1.5] mb-2" />
+        <div className="glass-card p-6">
+          <div className="icon-container mb-3">
+            <Target className="w-6 h-6 text-violet-400" />
+          </div>
           <h3 className="font-semibold text-lg text-white mb-1">Maqsadlar</h3>
           <p className="text-slate-300 font-mono tabular-nums">5 ta faol</p>
         </div>
         
-        <div className="glass-card">
-          <Trophy className="w-6 h-6 text-violet-400 stroke-[1.5] mb-2" />
+        <div className="glass-card p-6">
+          <div className="icon-container mb-3">
+            <Trophy className="w-6 h-6 text-violet-400" />
+          </div>
           <h3 className="font-semibold text-lg text-white mb-1">Ball</h3>
           <p className="text-slate-300 font-mono tabular-nums">1,250 XP</p>
         </div>
         
-        <div className="glass-card">
-          <Flame className="w-6 h-6 text-orange-500 stroke-[1.5] mb-2" />
+        <div className="glass-card p-6">
+          <div className="icon-container mb-3">
+            <Flame className="w-6 h-6 text-orange-500" />
+          </div>
           <h3 className="font-semibold text-lg text-white mb-1">Streak</h3>
           <p className="text-slate-300 font-mono tabular-nums">7 kun</p>
         </div>
